@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Islamic Digital Library</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Amiri&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+/* ===== GLOBAL ===== */
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+font-family:'Poppins',sans-serif;
+background:#f4f1e9;
+color:#1a1a1a;
+transition:0.4s;
+line-height:1.7;
+overflow-x:hidden;
+}
+
+/* Subtle Islamic geometric background */
+body::before{
+content:"";
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background-image:
+radial-gradient(circle at 25% 25%, rgba(212,175,55,0.07) 2px, transparent 2px),
+radial-gradient(circle at 75% 75%, rgba(212,175,55,0.07) 2px, transparent 2px);
+background-size:80px 80px;
+z-index:-1;
+}
+
+html{scroll-behavior:smooth; scroll-padding-top: 80px;}
+
+a{text-decoration:none;color:#d4af37;font-weight:600;}
+
+/* ===== NAVBAR ===== */
+.navbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:18px 5%;
+background:#0d2b1e;
+color:#fff;
+position:sticky;
+top:0;
+z-index:1000;
+box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.nav-links{
+display:flex;
+gap:25px;
+align-items:center;
+}
+
+.nav-links a{
+color:#ffd700;
+transition: 0.3s;
+}
+
+.nav-links a:hover{ color: #fff; }
+
+.theme-btn{
+background:#ffd700;
+border:none;
+padding:7px 12px;
+border-radius:5px;
+cursor:pointer;
+font-weight:bold;
+color:#0d2b1e;
+transition: 0.3s;
+}
+
+.theme-btn:hover { background: #e5c100; }
+
+.menu-toggle{display:none;font-size:24px;cursor:pointer;}
+
+/* ===== HERO ===== */
+.hero{
+background:linear-gradient(135deg,#0d2b1e,#145c3d);
+color:#fff;
+text-align:center;
+padding:120px 5%;
+}
+
+.arabic{
+font-family:'Amiri',serif;
+font-size:42px;
+color:#ffd700;
+margin-bottom:20px;
+}
+
+/* ===== SEARCH BAR ===== */
+.search-container {
+text-align: center;
+margin: 40px auto -40px;
+max-width: 600px;
+padding: 0 5%;
+position: relative;
+z-index: 10;
+}
+
+.search-box {
+width: 100%;
+padding: 15px 25px;
+border-radius: 30px;
+border: 2px solid #0d2b1e;
+font-size: 16px;
+outline: none;
+transition: 0.3s;
+box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.search-box:focus { border-color: #d4af37; }
+
+/* ===== SECTIONS ===== */
+.section{
+padding:80px 5%;
+max-width:1200px;
+margin:auto;
+}
+
+.section h2{
+margin-bottom:25px;
+color:#0d2b1e;
+border-bottom: 2px solid #d4af37;
+display: inline-block;
+padding-bottom: 5px;
+}
+
+/* ===== CARD WITH SCROLL ANIMATION ===== */
+.card{
+background:#fff;
+padding:30px;
+border-radius:14px;
+margin:30px 0;
+box-shadow:0 0 15px rgba(212,175,55,0.15);
+border:1px solid rgba(212,175,55,0.3);
+/* Scroll Animation Base */
+opacity: 0;
+transform: translateY(30px);
+transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s, transform 0.3s;
+}
+
+.card.visible {
+opacity: 1;
+transform: translateY(0);
+}
+
+.card.intro-card {
+border-left: 5px solid #d4af37;
+background: #fdfaf2;
+}
+
+.card:hover{
+box-shadow:0 0 25px rgba(212,175,55,0.4);
+transform:translateY(-5px); /* Hover lift */
+}
+
+.card h3 { color: #0d2b1e; margin-bottom: 10px; }
+
+.btn{
+display:inline-block;
+padding:10px 18px;
+background:#0d2b1e;
+color:#fff;
+border-radius:6px;
+margin:8px 8px 0 0;
+transition: 0.3s;
+}
+
+.btn:hover{
+background:#145c3d;
+color: #fff;
+}
+
+/* ===== MULTI-VOLUME ACCORDION ===== */
+details {
+margin-top: 15px;
+background: #fdfaf2;
+padding: 12px 18px;
+border-radius: 8px;
+border: 1px solid #e0d5b5;
+transition: background 0.3s;
+}
+
+summary {
+font-weight: 600;
+cursor: pointer;
+color: #0d2b1e;
+outline: none;
+font-size: 16px;
+}
+
+.volume-list {
+display: flex;
+flex-wrap: wrap;
+gap: 10px;
+margin-top: 15px;
+padding-top: 10px;
+border-top: 1px dashed #d4af37;
+}
+
+.volume-list .btn {
+font-size: 14px;
+padding: 8px 15px;
+margin: 0;
+}
+
+/* ===== BACK TO TOP BUTTON ===== */
+.back-to-top {
+position: fixed;
+bottom: 30px;
+right: 30px;
+background: #ffd700;
+color: #0d2b1e;
+border: none;
+padding: 12px 18px;
+border-radius: 50%;
+font-size: 20px;
+cursor: pointer;
+display: none;
+z-index: 1000;
+box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+transition: 0.3s;
+}
+
+.back-to-top:hover {
+background: #e5c100;
+transform: translateY(-5px);
+}
+
+/* ===== FOOTER ===== */
+footer{
+background:#0d2b1e;
+color:#fff;
+text-align:center;
+padding:25px;
+}
+
+/* ===== DARK MODE ===== */
+.dark{
+background:#121212;
+color:#eee;
+}
+
+.dark .card{
+background:#1e1e1e;
+border:1px solid #d4af37;
+box-shadow:0 0 20px rgba(212,175,55,0.1);
+}
+
+.dark .card.intro-card {
+background: #252525;
+border-left: 5px solid #ffd700;
+}
+
+.dark .card h3 { color: #ffd700; }
+.dark .section h2 { color: #ffd700; border-bottom: 2px solid #fff; }
+
+.dark .navbar,
+.dark footer{
+background:#000;
+}
+
+.dark .hero{
+background:linear-gradient(135deg,#000,#1a1a1a);
+}
+
+.dark .search-box {
+background: #1e1e1e;
+color: #fff;
+border: 2px solid #ffd700;
+}
+
+.dark details { background: #2a2a2a; border-color: #444; }
+.dark summary { color: #ffd700; }
+.dark .volume-list { border-top: 1px dashed #555; }
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){
+.nav-links{
+position:absolute;
+top:70px;
+right:0;
+background:#0d2b1e;
+flex-direction:column;
+width:220px;
+padding:20px;
+display:none;
+}
+.nav-links.show{display:flex;}
+.menu-toggle{display:block;}
+.hero{padding:80px 5%;}
+.arabic{font-size:28px;}
+}
+
+</style>
+</head>
+
+<body>
+
+<nav class="navbar">
+<div><strong>Islamic Digital Library</strong></div>
+
+<div class="nav-links" id="navLinks">
+<a href="#home">Home</a>
+<a href="#quran">Quran</a>
+<a href="#hadith">Hadith</a>
+<a href="#contact">Contact</a>
+<button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle Dark Mode">🌙</button>
+</div>
+
+<div class="menu-toggle" onclick="toggleMenu()">☰</div>
+</nav>
+
+<section class="hero" id="home">
+<div class="arabic">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+<h1>Islamic Digital Library</h1>
+<p>Sadaqah Jariyah Project – Free Forever – No Ads – No Monetization</p>
+</section>
+
+<div class="search-container">
+<input type="text" id="searchInput" class="search-box" placeholder="Search for Quran, Hadith, or Topics..." onkeyup="searchLibrary()">
+</div>
+
+<section class="section">
+<div class="card intro-card">
+<h3>About Islam & Prophet Muhammad (ﷺ)</h3>
+<p>Islam is a religion of peace, submission, and complete obedience to the Will of Allah. It is built upon five pillars: Declaration of Faith (Shahada), Prayer (Salah), Charity (Zakat), Fasting (Sawm), and Pilgrimage (Hajj).</p>
+<br>
+<p>Prophet Muhammad (ﷺ) is the final messenger of Allah, sent as a mercy to all of creation (Rahmat lil-'Alamin). His life, character, and teachings are the perfect example for all of humanity to follow. <em>"Indeed, in the Messenger of Allah you have an excellent example for whoever has hope in Allah and the Last Day, and remembers Allah often." (Quran 33:21)</em></p>
+</div>
+
+<div class="card">
+<h3>About Ilm (Knowledge)</h3>
+<p>The first revelation was “Iqra” (Read). Seeking knowledge is obligatory upon every Muslim.
+Knowledge elevates, purifies and strengthens faith. <em>"Allah will exalt in degree those of you who believe, and those who have been granted knowledge." (Quran 58:11)</em></p>
+</div>
+</section>
+
+<section class="section" id="quran">
+<h2>Quran Section</h2>
+
+<div class="card intro-card">
+<h3>📖 What is the Noble Quran?</h3>
+<p>The Noble Quran is the literal, uncreated word of Allah (SWT) revealed to Prophet Muhammad (ﷺ) through the Angel Jibril (Gabriel) over a period of 23 years. It is the ultimate source of guidance, law, and healing for humanity.</p>
+</div>
+
+<div class="card">
+<h3>1. Arabic Quran</h3>
+<a href="quran-arabic.pdf" target="_blank" class="btn">Read</a>
+<a href="quran-arabic.pdf" download class="btn">Download</a>
+</div>
+
+<div class="card">
+<h3>2. Urdu Translation (Roman / Hinglish)</h3>
+<a href="quran-roman.pdf" target="_blank" class="btn">Read</a>
+<a href="quran-roman.pdf" download class="btn">Download</a>
+</div>
+
+<div class="card">
+<h3>3. Urdu Translation (Taqi Usmani)</h3>
+<a href="quran-taqi.pdf" target="_blank" class="btn">Read</a>
+<a href="quran-taqi.pdf" download class="btn">Download</a>
+</div>
+
+<div class="card">
+<h3>4. Quran Recitation & Translation (YouTube Playlists)</h3>
+<p>Listen to the Noble Quran with Arabic recitation and Urdu/Hindi translation.</p>
+<div class="volume-list">
+<a href="YOUR_YOUTUBE_LINK_HERE" target="_blank" class="btn">▶️ Urdu/Hindi Translation</a>
+<a href="YOUR_YOUTUBE_LINK_HERE" target="_blank" class="btn">▶️ Arabic with Urdu/Hindi Translation</a>
+</div>
+</div>
+</section>
+
+<section class="section" id="hadith">
+<h2>Hadith Section (Kutub al-Sittah)</h2>
+
+<div class="card intro-card">
+<h3>📜 What is Hadith?</h3>
+<p>Hadith represents the documented sayings, actions, and silent approvals of Prophet Muhammad (ﷺ). While the Quran is the word of Allah, the Hadith provides the practical application, detailed explanation, and context for the Quranic teachings.</p>
+</div>
+
+<div class="card">
+<h3>Sahih al-Bukhari</h3>
+<p>Compiled by Imam Muhammad al-Bukhari.</p>
+<details>
+<summary>Access All 9 Volumes</summary>
+<div class="volume-list">
+<a href="bukhari-vol1.pdf" target="_blank" class="btn">Vol 1</a>
+<a href="bukhari-vol2.pdf" target="_blank" class="btn">Vol 2</a>
+<a href="bukhari-vol3.pdf" target="_blank" class="btn">Vol 3</a>
+<a href="bukhari-vol4.pdf" target="_blank" class="btn">Vol 4</a>
+<a href="bukhari-vol5.pdf" target="_blank" class="btn">Vol 5</a>
+<a href="bukhari-vol6.pdf" target="_blank" class="btn">Vol 6</a>
+<a href="bukhari-vol7.pdf" target="_blank" class="btn">Vol 7</a>
+<a href="bukhari-vol8.pdf" target="_blank" class="btn">Vol 8</a>
+<a href="bukhari-vol9.pdf" target="_blank" class="btn">Vol 9</a>
+</div>
+</details>
+</div>
+
+<div class="card">
+<h3>Sahih Muslim</h3>
+<p>Compiled by Imam Muslim ibn al-Hajjaj.</p>
+<details>
+<summary>Access All 7 Volumes</summary>
+<div class="volume-list">
+<a href="muslim-vol1.pdf" target="_blank" class="btn">Vol 1</a>
+<a href="muslim-vol2.pdf" target="_blank" class="btn">Vol 2</a>
+<a href="muslim-vol3.pdf" target="_blank" class="btn">Vol 3</a>
+<a href="muslim-vol4.pdf" target="_blank" class="btn">Vol 4</a>
+<a href="muslim-vol5.pdf" target="_blank" class="btn">Vol 5</a>
+<a href="muslim-vol6.pdf" target="_blank" class="btn">Vol 6</a>
+<a href="muslim-vol7.pdf" target="_blank" class="btn">Vol 7</a>
+</div>
+</details>
+</div>
+
+<div class="card">
+<h3>Sunan Abu Dawud</h3>
+<p>Compiled by Imam Abu Dawud.</p>
+<details>
+<summary>Access All 5 Volumes</summary>
+<div class="volume-list">
+<a href="abudawud-vol1.pdf" target="_blank" class="btn">Vol 1</a>
+<a href="abudawud-vol2.pdf" target="_blank" class="btn">Vol 2</a>
+<a href="abudawud-vol3.pdf" target="_blank" class="btn">Vol 3</a>
+<a href="abudawud-vol4.pdf" target="_blank" class="btn">Vol 4</a>
+<a href="abudawud-vol5.pdf" target="_blank" class="btn">Vol 5</a>
+</div>
+</details>
+</div>
+
+<div class="card">
+<h3>Jami at-Tirmidhi</h3>
+<p>Compiled by Imam Abu Isa Muhammad at-Tirmidhi.</p>
+<details>
+<summary>Access All 6 Volumes</summary>
+<div class="volume-list">
+<a href="tirmidhi-vol1.pdf" target="_blank" class="btn">Vol 1</a>
+<a href="tirmidhi-vol2.pdf" target="_blank" class="btn">Vol 2</a>
+<a href="tirmidhi-vol3.pdf" target="_blank" class="btn">Vol 3</a>
+<a href="tirmidhi-vol4.pdf" target="_blank" class="btn">Vol 4</a>
+<a href="tirmidhi-vol5.pdf" target="_blank" class="btn">Vol 5</a>
+<a href="tirmidhi-vol6.pdf" target="_blank" class="btn">Vol 6</a>
+</div>
+</details>
+</div>
+
+<div class="card">
+<h3>Sunan an-Nasa'i</h3>
+<p>Compiled by Imam Ahmad an-Nasa'i.</p>
+<details>
+<summary>Access All 6 Volumes</summary>
+<div class="volume-list">
+<a href="nasai-vol1.pdf" target="_blank" class="btn">Vol 1</a>
+<a href="nasai-vol2.pdf" target="_blank" class="btn">Vol 2</a>
+<a href="nasai-vol3.pdf" target="_blank" class="btn">Vol 3</a>
+<a href="nasai-vol4.pdf" target="_blank" class="btn">Vol 4</a>
+<a href="nasai-vol5.pdf" target="_blank" class="btn">Vol 5</a>
+<a href="nasai-vol6.pdf" target="_blank" class="btn">Vol 6</a>
+</div>
+</details>
+</div>
+
+<div class="card">
+<h3>Sunan Ibn Majah</h3>
+<p>Compiled by Imam Ibn Majah.</p>
+<details>
+<summary>Access All 5 Volumes</summary>
+<div class="volume-list">
+<a href="ibnmajah-vol1.pdf" target="_blank" class="btn">Vol 1</a>
+<a href="ibnmajah-vol2.pdf" target="_blank" class="btn">Vol 2</a>
+<a href="ibnmajah-vol3.pdf" target="_blank" class="btn">Vol 3</a>
+<a href="ibnmajah-vol4.pdf" target="_blank" class="btn">Vol 4</a>
+<a href="ibnmajah-vol5.pdf" target="_blank" class="btn">Vol 5</a>
+</div>
+</details>
+</div>
+
+</section>
+
+<section class="section" id="contact">
+<div class="card">
+<h2>Contact & Contribution</h2>
+<p><strong>Developer:</strong> Muhammad Aariz Khan</p>
+<p><strong>Email:</strong> muhammadaarizkhansocial@gmail.com</p>
+<p>If anyone wants to donate authentic Islamic PDF books, they are welcome to contribute.</p>
+</div>
+</section>
+
+<footer>
+© 2026 Islamic Digital Library<br>
+Developed by Muhammad Aariz Khan
+</footer>
+
+<button class="back-to-top" id="backToTop" onclick="scrollToTop()">↑</button>
+
+<script>
+// Toggle Dark Mode
+function toggleTheme(){
+document.body.classList.toggle("dark");
+}
+
+// Toggle Mobile Menu
+function toggleMenu(){
+document.getElementById("navLinks").classList.toggle("show");
+}
+
+// Search Filter Logic
+function searchLibrary() {
+let input = document.getElementById('searchInput').value.toLowerCase();
+let cards = document.querySelectorAll('.card');
+
+cards.forEach(card => {
+let text = card.innerText.toLowerCase();
+if(text.includes(input)) {
+card.style.display = "block";
+} else {
+card.style.display = "none";
+}
+});
+}
+
+// Back to Top Logic
+window.onscroll = function() {
+let btn = document.getElementById("backToTop");
+if (document.body.scrollTop > 400 || document.documentElement.scrollTop > 400) {
+btn.style.display = "block";
+} else {
+btn.style.display = "none";
+}
+};
+
+function scrollToTop() {
+window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+// SCROLL ANIMATION LOGIC
+document.addEventListener("DOMContentLoaded", function() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 }); // Triggers when 10% of the card is visible
+
+  document.querySelectorAll('.card').forEach(card => {
+    observer.observe(card);
+  });
+});
+</script>
+
+</body>
+  </html>
+  
