@@ -53,6 +53,12 @@ z-index:1000;
 box-shadow: 0 2px 10px rgba(0,0,0,0.2);
 }
 
+.nav-brand-container {
+display: flex;
+align-items: center;
+gap: 15px;
+}
+
 .nav-links{
 display:flex;
 gap:25px;
@@ -307,14 +313,16 @@ display:none;
 <body>
 
 <nav class="navbar">
+<div class="nav-brand-container">
+<button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle Dark Mode">🌙</button>
 <div><strong>Islamic Digital Library</strong></div>
+</div>
 
 <div class="nav-links" id="navLinks">
 <a href="#home">Home</a>
 <a href="#quran">Quran</a>
 <a href="#hadith">Hadith</a>
 <a href="#contact">Contact</a>
-<button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle Dark Mode">🌙</button>
 </div>
 
 <div class="menu-toggle" onclick="toggleMenu()">☰</div>
