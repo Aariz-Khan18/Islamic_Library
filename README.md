@@ -1,20 +1,56 @@
 # 📚 Islamic Digital Library
 
-## Why This Project?
+A simple and clean web application providing access to Quran, Hadith, Fiqh, and Islamic knowledge resources.
 
-The Islamic Digital Library was created as a **Sadaqah Jariyah** initiative to provide free and organized access to authentic Islamic knowledge.
-
-In a world full of distractions, ads, and misinformation, this platform aims to:
-
-- 📖 Provide easy access to the Noble Quran
-- 📜 Offer structured Hadith collections (Kutub al-Sittah)
-- 🎧 Share Quran recitation and translations
-- 🌙 Maintain a clean, ad-free, and distraction-free environment
-- 🤲 Spread beneficial knowledge for the sake of Allah
-
-This project is completely free, non-commercial, and built with sincerity to serve the Ummah.
+🌐 **Live Demo:** https://islamic-library.onrender.com
 
 ---
 
-© 2026 Islamic Digital Library  
-Developed by Muhammad Aariz Khan
+## ✨ Features
+
+- 📖 Quran, Hadith, Fiqh & Fatwa resources
+- 🔍 Search functionality for quick access
+- 🌙 Light & Dark mode UI
+- ⚡ Responsive and fast performance
+- 🕌 Clean and minimal design
+
+---
+
+## 🛠️ Tech Stack
+
+- HTML5
+- CSS3
+- JavaScript
+
+---
+
+## 📸 Screenshots
+
+### 🌙 Dark Mode (Mobile View)
+<p align="center">
+  <img src="assets/Dark Mode (Mobile View).png" width="300"/>
+</p>
+
+### ☀️ Light Mode (Mobile View)
+<p align="center">
+  <img src="assets/Light Mode (Mobile View).png" width="300"/>
+</p>
+
+### 🌙 Dark Mode (Desktop View)
+<p align="center">
+  <img src="assets/Dark Mode (Desktop View).png" width="800"/>
+</p>
+
+
+### ☀️ Light Mode (Desktop View)
+<p align="center">
+  <img src="assets/Light Mode (Desktop View).png" width="800"/>
+</p>
+
+---
+
+## 🚀 Getting Started
+
+```bash
+git clone https://github.com/Aariz-Khan18/Islamic_Library.git
+cd Islamic_Library
